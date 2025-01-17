@@ -69,7 +69,7 @@ export const getSuggestedUsers = async (req, res, next) => {
 
   const suggestedUsers = filteredUsers.slice(0, 4)
 
-  suggestedUsers.forEach(user => user.password = null)
+  suggestedUsers.forEach(user => delete user.password)
 
   res.status(200).json({ success: true, message: 'Suggested users retrieved successfully', data: { suggestedUsers } })
 }
@@ -103,7 +103,7 @@ export const updateUser = async (req, res, next) => {
       await cloudinary.uploader.destroy(user.profileImg.split('/').pop().split('.')[0])
     }
 
-    const uploadedImg = await cloudinary.uploader.upload(profileImg, { folder: 'x' })
+    const uploadedImg = await cloudinary.uploader.upload(profileImg, { folder: 'x_profileImg' })
 
     profileImg = uploadedImg.secure_url
   }
@@ -113,7 +113,7 @@ export const updateUser = async (req, res, next) => {
       await cloudinary.uploader.destroy(user.coverImg.split('/').pop().split('.')[0])
     }
 
-    const uploadedImg = await cloudinary.uploader.upload(profileImg, { folder: 'x' })
+    const uploadedImg = await cloudinary.uploader.upload(profileImg, { folder: 'x_coverImg' })
 
     coverImg = uploadedImg.secure_url
   }
@@ -128,7 +128,7 @@ export const updateUser = async (req, res, next) => {
 
   user = await user.save()
 
-  user.password = null
+  delete user.password
 
   res.status(200).json({ success: true, message: 'User updated successfully', data: { user } })
 }

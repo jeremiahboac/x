@@ -9,9 +9,9 @@ export const protectRoute = async (req, res, next) => {
 
     if (!token) throw new AppError(401, 'Authorization token is required')
 
-    const decodedToken = await verifyToken(token)
+    const { userId } = await verifyToken(token)
 
-    const user = await User.findById(decodedToken.userId).select('-password')
+    const user = await User.findById(userId).select('-password')
 
     if (!user) throw new AppError(404, 'User not found')
 
