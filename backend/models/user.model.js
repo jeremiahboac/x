@@ -45,7 +45,12 @@ const userSchema = new Schema({
   link: {
     type: String,
     default: ''
-  }
+  },
+  likedPosts: [{
+    type: Schema.Types.ObjectId,
+    ref: 'Post',
+    default: []
+  }]
 }, { timestamps: true })
 
 const User = model('User', userSchema)

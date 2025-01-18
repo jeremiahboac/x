@@ -103,7 +103,7 @@ export const updateUser = async (req, res, next) => {
       await cloudinary.uploader.destroy(user.profileImg.split('/').pop().split('.')[0])
     }
 
-    const uploadedImg = await cloudinary.uploader.upload(profileImg, { folder: 'x_profileImg' })
+    const uploadedImg = await cloudinary.uploader.upload(profileImg, { folder: 'x' })
 
     profileImg = uploadedImg.secure_url
   }
@@ -113,7 +113,7 @@ export const updateUser = async (req, res, next) => {
       await cloudinary.uploader.destroy(user.coverImg.split('/').pop().split('.')[0])
     }
 
-    const uploadedImg = await cloudinary.uploader.upload(profileImg, { folder: 'x_coverImg' })
+    const uploadedImg = await cloudinary.uploader.upload(profileImg, { folder: 'x' })
 
     coverImg = uploadedImg.secure_url
   }
@@ -127,6 +127,8 @@ export const updateUser = async (req, res, next) => {
   user.link = link || user.link
 
   user = await user.save()
+
+  user = user.toObject()
 
   delete user.password
 
